@@ -347,20 +347,28 @@ button:focus-visible {
 }
 
 .picks {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+/* Undecided slots hold several umas, so they share the width instead of stacking. */
+.picks-multi {
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
 }
 
 .pick {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  padding: 4px 6px 4px 4px;
+  gap: 5px;
+  padding: 11px 8px 9px;
   border-radius: var(--radius-sm);
   background: var(--surface);
   border: 1px solid var(--border);
   min-width: 0;
+  text-align: center;
 }
 
 .pick-locked {
@@ -383,39 +391,67 @@ button:focus-visible {
 }
 
 .portrait {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: top center;
-  background: var(--surface-3);
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 
-.portrait-lg {
-  width: 40px;
-  height: 40px;
+/* The slot card's headline: the uma should be recognisable at a glance across the room.
+   The source art is a transparent cutout already framed to the upper body, so it's shown
+   whole rather than masked into a circle, which would clip arms and shoulders. */
+.sprite {
+  width: 104px;
+  height: 104px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
 }
 
-.pick-text {
-  flex: 1;
-  min-width: 0;
+.picks-multi .sprite {
+  width: 66px;
+  height: 66px;
 }
 
 .pick-name {
-  font-size: 13px;
-  font-weight: 550;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
-.pick-sub {
-  font-size: 11px;
+.picks-multi .pick-name {
+  font-size: 12px;
+}
+
+.pick-variant {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--text-dim);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  background: var(--surface-3);
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+
+/* Kept below the name rather than floated over the art, so nothing covers the sprite. */
+.pick-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.pick-meta:empty {
+  display: none;
+}
+
+.pick-remove-corner {
+  position: absolute;
+  top: 3px;
+  right: 3px;
 }
 
 .pick-remove {

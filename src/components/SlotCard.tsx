@@ -67,7 +67,7 @@ export function SlotCard({
       {cards.length === 0 ? (
         <div className="slot-empty">No uma picked</div>
       ) : (
-        <div className="picks">
+        <div className={cards.length > 1 ? 'picks picks-multi' : 'picks'}>
           {cards.map((card) => {
             const status = statusFor(conflicts, card.cardId, slot.id);
             const conflicted = status.kind === 'taken';
@@ -84,17 +84,8 @@ export function SlotCard({
 
             return (
               <div className={pickClass} key={card.cardId}>
-                <Portrait card={card} />
-                <span className="pick-text">
-                  <span className="pick-name">{card.characterName}</span>
-                  <span className="pick-sub">
-                    {card.type || 'Original'}
-                    {card.costume ? ` · ${card.costume}` : ''}
-                  </span>
-                </span>
-                {laneTag && <AptitudeBadge card={card} tag={laneTag} />}
                 <button
-                  className="pick-remove"
+                  className="pick-remove pick-remove-corner"
                   onClick={() =>
                     dispatch({ type: 'removePick', slotId: slot.id, cardId: card.cardId })
                   }
@@ -102,6 +93,15 @@ export function SlotCard({
                 >
                   &times;
                 </button>
+                <Portrait card={card} className="sprite" />
+                <span className="pick-name">{card.characterName}</span>
+                <span className="pick-meta">
+                  {/* Only non-default outfits are worth naming; "Original" is just noise. */}
+                  {card.type && card.type !== 'Original' && (
+                    <span className="pick-variant">{card.type}</span>
+                  )}
+                  {laneTag && <AptitudeBadge card={card} tag={laneTag} />}
+                </span>
               </div>
             );
           })}

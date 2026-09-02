@@ -2,15 +2,16 @@ import type { UmaCard } from '../data/catalog';
 
 interface PortraitProps {
   card: UmaCard;
-  large?: boolean;
+  /** Sizing is left to the caller: `portrait` for list rows, `sprite` for slot cards. */
+  className?: string;
 }
 
-/** GameTora-hosted thumbnail. Hidden rather than broken if the image doesn't load. */
-export function Portrait({ card, large }: PortraitProps) {
-  if (!card.thumbnail) return <div className={large ? 'portrait portrait-lg' : 'portrait'} />;
+/** GameTora-hosted stand image, cropped to the head. Hidden rather than broken if it fails. */
+export function Portrait({ card, className = 'portrait' }: PortraitProps) {
+  if (!card.thumbnail) return <div className={className} />;
   return (
     <img
-      className={large ? 'portrait portrait-lg' : 'portrait'}
+      className={className}
       src={card.thumbnail}
       alt=""
       loading="lazy"
