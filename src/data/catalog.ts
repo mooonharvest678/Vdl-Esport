@@ -4,7 +4,7 @@
 const CATALOG_URL =
   'https://raw.githubusercontent.com/JustWastingTime/TazunaDiscordBot/heads/main/assets/character.json';
 
-const CACHE_KEY = 'ccp.catalog.v1';
+const CACHE_KEY = 'ccp.catalog.v2';
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 export const APTITUDE_GRADES = ['S', 'A', 'B', 'C', 'D', 'E', 'F', 'G'] as const;
@@ -88,12 +88,32 @@ function readAptitudeGroup(entry: RawEntry, keys: readonly string[]): RawEntry {
   return match ?? {};
 }
 
+/**
+ * The outfit id that uniquely identifies a catalog row.
+ * Usually the `id` prefix and the thumbnail's outfit id agree. When they don't, one of
+ * them is stale — e.g. Gold Ship Summer's id still says 100701 but its thumbnail is
+ * 100702, while Agnes Digital Halloween's id is 101902 but its thumbnail still points
+ * at 101901. Taking the higher number picks the correct alt in every known bad case.
+ */
+function outfitIdFromEntry(entry: RawEntry): string {
+  const fromId = asString(entry.id).split('-')[0]?.trim() ?? '';
+  const thumbnail = asString(entry.thumbnail);
+  const fromThumb = thumbnail.match(/chara_stand_\d+_(\d+)\.png$/i)?.[1] ?? '';
+
+  const idOk = /^\d{4,}$/.test(fromId);
+  const thumbOk = /^\d{4,}$/.test(fromThumb);
+  if (idOk && thumbOk) {
+    return fromId === fromThumb ? fromId : String(Math.max(Number(fromId), Number(fromThumb)));
+  }
+  if (idOk) return fromId;
+  if (thumbOk) return fromThumb;
+  return '';
+}
+
 function normalizeEntry(entry: RawEntry): UmaCard | null {
-  // `id` looks like "100102 - Special Week Summer"; the leading number is the card id
-  // and its first four digits identify the character across all of its outfits.
-  const cardId = asString(entry.id).split('-')[0]?.trim() ?? '';
+  const cardId = outfitIdFromEntry(entry);
   const characterName = asString(entry.character_name).trim();
-  if (!/^\d{4,}$/.test(cardId) || !characterName) return null;
+  if (!cardId || !characterName) return null;
 
   const surfaceGroup = readAptitudeGroup(entry, SURFACES);
   const distanceGroup = readAptitudeGroup(entry, DISTANCES);
