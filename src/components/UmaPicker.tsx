@@ -37,9 +37,9 @@ function statusLabel(status: PickStatus): { text: string; className: string } | 
     case 'taken':
       return { text: `${status.by.who}`, className: 'outfit-status status-taken' };
     case 'contested':
-      return { text: 'also a maybe', className: 'outfit-status status-contested' };
+      return { text: 'Đang được cân nhắc', className: 'outfit-status status-contested' };
     case 'mine':
-      return { text: 'locked in', className: 'outfit-status status-mine' };
+      return { text: 'Đã chốt', className: 'outfit-status status-mine' };
     default:
       return null;
   }
@@ -100,7 +100,7 @@ export function UmaPicker({
     <div className="search-row">
       <input
         className="search-input"
-        placeholder="Search name, outfit, or nickname..."
+        placeholder="Tìm tên, trang phục hoặc biệt danh..."
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         autoFocus
@@ -110,10 +110,10 @@ export function UmaPicker({
           className="filter-select"
           value={sortBy}
           onChange={(event) => setSortBy(event.target.value as 'name' | 'aptitude')}
-          aria-label="Sort order"
+          aria-label="Sắp xếp"
         >
-          <option value="aptitude">Best for {laneTag}</option>
-          <option value="name">A to Z</option>
+          <option value="aptitude">Phù hợp nhất cho {laneTag}</option>
+          <option value="name">A đến Z</option>
         </select>
       )}
     </div>
@@ -128,17 +128,17 @@ export function UmaPicker({
           onChange={(event) => setHideTaken(event.target.checked)}
           style={{ accentColor: 'var(--accent)' }}
         />
-        Hide taken
+        Ẩn Uma đã bị chốt
       </label>
       <span style={{ marginLeft: 'auto', fontSize: 13, color: 'var(--text-dim)' }}>
         {selected.length === 0
-          ? 'Nothing picked yet'
+          ? 'Chưa chọn Uma nào'
           : selected.length === 1
-            ? 'Locked in'
-            : `${selected.length} maybes`}
+            ? 'Đã chốt'
+            : `Đang phân vân ${selected.length} Uma`}
       </span>
       <button className="btn btn-primary" onClick={onClose}>
-        Done
+        Hoàn tất
       </button>
     </>
   );
@@ -148,8 +148,8 @@ export function UmaPicker({
       wide
       title={
         <>
-          Pick for {slotLabel}
-          {laneTag && <span className="modal-sub"> · {laneTag} group</span>}
+          Chọn Uma cho {slotLabel}
+          {laneTag && <span className="modal-sub"> · Nhóm {laneTag}</span>}
         </>
       }
       onClose={onClose}
@@ -158,8 +158,8 @@ export function UmaPicker({
     >
       {groups.length === 0 ? (
         <div className="empty-state">
-          No uma match that search.
-          {hideTaken && ' Try unchecking "Hide taken".'}
+          Không tìm thấy Uma nào phù hợp.
+          {hideTaken && ' Hãy thử tắt tùy chọn "Ẩn Uma đã bị chốt".'}
         </div>
       ) : (
         <div className="character-list">
@@ -169,7 +169,7 @@ export function UmaPicker({
                 <Portrait card={group.outfits[0]} />
                 <span className="character-name">{group.characterName}</span>
                 {group.outfits.length > 1 && (
-                  <span className="character-note">{group.outfits.length} outfits</span>
+                  <span className="character-note">{group.outfits.length} trang phục</span>
                 )}
                 {laneTag && isStrongAptitude(aptitudeForLane(group.outfits[0], laneTag)) && (
                   <AptitudeBadge card={group.outfits[0]} tag={laneTag} />
@@ -198,20 +198,20 @@ export function UmaPicker({
                       onClick={() => onToggle(card.cardId)}
                       title={
                         blocked && status.kind === 'taken'
-                          ? `Locked in by ${status.by.who}`
+                          ? `Đã bị chốt bởi ${status.by.who}`
                           : undefined
                       }
                     >
                       <Portrait card={card} />
                       <span className="outfit-text">
-                        <span className="outfit-name">{card.type || 'Original'}</span>
+                        <span className="outfit-name">{card.type || 'Mặc định'}</span>
                         <span className="outfit-sub">{card.costume || card.rarity}</span>
                       </span>
                       {laneTag && <AptitudeBadge card={card} tag={laneTag} />}
                       {label && !isSelected && (
                         <span className={label.className}>{label.text}</span>
                       )}
-                      {isSelected && <span className="outfit-status status-mine">picked</span>}
+                      {isSelected && <span className="outfit-status status-mine">đã chọn</span>}
                     </button>
                   );
                 })}
