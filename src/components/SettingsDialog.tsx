@@ -40,7 +40,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
     );
     if (
       filled &&
-      !window.confirm('Applying a format rebuilds the board and clears every pick. Continue?')
+      !window.confirm('Áp dụng định dạng mới sẽ làm lại bảng và xóa toàn bộ các lựa chọn hiện tại. Bạn có chắc muốn tiếp tục không?')
     ) {
       return;
     }
@@ -61,17 +61,16 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
       footer={
         <>
           <span style={{ fontSize: 13, color: 'var(--text-dim)' }}>
-            {totalSlots(roster)} slots across {roster.lanes.length}{' '}
-            {roster.lanes.length === 1 ? 'group' : 'groups'}
+            {totalSlots(roster)} vị trí trong {roster.lanes.length} nhóm
           </span>
           <button className="btn btn-primary" style={{ marginLeft: 'auto' }} onClick={onClose}>
-            Done
+            Hoàn tất
           </button>
         </>
       }
     >
       <div className="field">
-        <span className="field-label">Unique uma rule</span>
+        <span className="field-label">Quy tắc chọn Uma</span>
         <div className="mode-options">
           {UNIQUE_MODE_OPTIONS.map((option) => (
             <label
@@ -100,7 +99,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
       </div>
 
       <div className="field">
-        <span className="field-label">Groups</span>
+        <span className="field-label">Danh sách Cự ly</span>
         <div className="lane-editor">
           {roster.lanes.map((lane) => (
             <div className="lane-row" key={lane.id}>
@@ -110,7 +109,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
                 onChange={(event) =>
                   dispatch({ type: 'setLaneName', laneId: lane.id, name: event.target.value })
                 }
-                aria-label="Group name"
+                aria-label="Tên nhóm"
               />
               <select
                 value={lane.tag ?? ''}
@@ -121,9 +120,9 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
                     tag: (event.target.value || undefined) as LaneTag | undefined,
                   })
                 }
-                aria-label="Race category"
+                aria-label="Cự ly thi đấu"
               >
-                <option value="">No category</option>
+                <option value="">Mặc định</option>
                 {LANE_TAGS.map((tag) => (
                   <option key={tag} value={tag}>
                     {tag}
@@ -140,7 +139,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
                     })
                   }
                   disabled={lane.slots.length <= 1}
-                  aria-label="Remove a slot"
+                  aria-label="Xóa vị trít"
                 >
                   &minus;
                 </button>
@@ -153,7 +152,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
                       count: lane.slots.length + 1,
                     })
                   }
-                  aria-label="Add a slot"
+                  aria-label="Thêm vị trí"
                 >
                   +
                 </button>
@@ -163,7 +162,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
                 onClick={() => dispatch({ type: 'removeLane', laneId: lane.id })}
                 disabled={roster.lanes.length <= 1}
               >
-                Delete
+                Xóa
               </button>
             </div>
           ))}
@@ -176,13 +175,12 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
           + Thêm nhóm
         </button>
         <p className="field-help">
-          A category makes each slot show that uma's aptitude grade for the distance. It's a hint
-          only and never blocks a pick.
+          Việc chọn cự ly sẽ hiển thị độ thích ứng của Uma với cự ly đó. Đây chỉ là một gợi ý, bạn vẫn có thể chọn bất kỳ Uma nào.
         </p>
       </div>
 
       <div className="field" style={{ marginBottom: 0 }}>
-        <span className="field-label">Start from a format</span>
+        <span className="field-label">Bắt đầu từ một định dạng có sẵn</span>
         {showPresets ? (
           <div className="preset-list">
             {PRESETS.map((preset) => (
@@ -200,10 +198,10 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
           </div>
         ) : (
           <button className="btn btn-sm" onClick={() => setShowPresets(true)}>
-            Choose a format...
+            Chọn một định dạng giải đấu...
           </button>
         )}
-        <p className="field-help">Applying a format rebuilds the board and clears every pick.</p>
+        <p className="field-help">Lưu ý: Việc áp dụng định dạng có sẵn sẽ xóa toàn bộ lựa chọn hiện tại trên bảng.</p>
       </div>
     </Modal>
   );
