@@ -213,7 +213,7 @@ function Picker({ boot, catalog }: { boot: Boot; catalog: Catalog }) {
 
       <div className="meta-row">
         <span className="progress-pill">
-          Đã chọn: ${filled} / ${total}
+          Đã chọn: {filled} / {total}
         </span>
         <span>
           {roster.settings.uniqueMode === 'character'
