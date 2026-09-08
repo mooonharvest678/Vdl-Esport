@@ -33,7 +33,7 @@ export function Board({
               onChange={(event) =>
                 dispatch({ type: 'setLaneName', laneId: lane.id, name: event.target.value })
               }
-              aria-label="Group name"
+              aria-label="Tên nhóm"
             />
             {lane.tag && <span className="lane-tag">{lane.tag}</span>}
           </div>
@@ -61,7 +61,7 @@ export function Board({
             style={{ marginTop: 8, width: '100%', justifyContent: 'center' }}
             onClick={() => dispatch({ type: 'addSlot', laneId: lane.id })}
           >
-            + Add player
+            + Thêm tuyển thủ
           </button>
         </section>
       ))}
