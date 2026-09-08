@@ -51,21 +51,21 @@ export function SlotCard({
         <span className="slot-index">{index + 1}</span>
         <input
           className="player-input"
-          placeholder="Player name"
+          placeholder="Tên tuyển thủ"
           value={slot.player}
           onChange={(event) =>
             dispatch({ type: 'setPlayer', slotId: slot.id, player: event.target.value })
           }
         />
         {canRemove && (
-          <button className="pick-remove" onClick={onRemove} title="Remove this slot">
+          <button className="pick-remove" onClick={onRemove} title="Xóa vị trí này">
             &times;
           </button>
         )}
       </div>
 
       {cards.length === 0 ? (
-        <div className="slot-empty">No uma picked</div>
+        <div className="slot-empty">Chưa chọn Uma</div>
       ) : (
         <div className={cards.length > 1 ? 'picks picks-multi' : 'picks'}>
           {cards.map((card) => {
@@ -89,7 +89,7 @@ export function SlotCard({
                   onClick={() =>
                     dispatch({ type: 'removePick', slotId: slot.id, cardId: card.cardId })
                   }
-                  title={`Remove ${card.characterName}`}
+                  title={`Xóa ${card.characterName}`}
                 >
                   &times;
                 </button>
@@ -109,25 +109,23 @@ export function SlotCard({
       )}
 
       {tentative && contestedCount === 0 && takenCount === 0 && (
-        <div className="maybe-hint">Undecided — {cards.length} options listed</div>
+        <div className="maybe-hint">Đang phân vân — Đã chọn ${cards.length} Uma dự phòng</div>
       )}
       {tentative && contestedCount > 0 && (
         <div className="maybe-hint">
-          {contestedCount === 1 ? 'One option is' : `${contestedCount} options are`} also on
-          someone else's maybe list
+          {contestedCount === 1 ? 'Có 1 Uma' : `Có ${contestedCount} Uma`} đang bị trùng với danh sách phân vân của người khác`
         </div>
       )}
       {tentative && takenCount > 0 && (
         <div className="conflict-hint">
-          {takenCount === 1 ? 'One option has' : `${takenCount} options have`} been locked in by
-          someone else
+          {takenCount === 1 ? 'Có 1 Uma' : `Có ${takenCount} Uma`} đã bị người khác chốt lấy
         </div>
       )}
-      {hasIssue && <div className="conflict-hint">Clashes with another locked-in pick</div>}
+      {hasIssue && <div className="conflict-hint">Bị trùng với Uma đã được chốt của người khác</div>}
 
       <div className="slot-actions">
         <button className="btn btn-sm" onClick={onOpenPicker}>
-          {cards.length === 0 ? 'Pick uma' : tentative ? 'Edit maybes' : 'Change'}
+          {cards.length === 0 ? 'Chọn Uma' : tentative ? 'Sửa dự phòng' : 'Đổi Uma'}
         </button>
         {cards.length > 0 && (
           <button
