@@ -33,23 +33,22 @@ export function ShareDialog({ roster, onClose }: ShareDialogProps) {
 
   return (
     <Modal
-      title="Share this board"
+      title="Chia sẻ đội hình"
       onClose={onClose}
       footer={
         <>
           <button className="btn btn-primary" onClick={copy}>
-            {copied ? 'Copied' : 'Copy link'}
+            {copied ? 'Đã copy' : 'Sao chép link'}
           </button>
           <button className="btn btn-ghost" onClick={onClose}>
-            Close
+            Đóng
           </button>
         </>
       }
     >
       <p style={{ marginTop: 0, color: 'var(--text-dim)', fontSize: 14 }}>
-        The entire board is packed into this link, so anyone who opens it sees exactly what you
-        see right now. It's a snapshot rather than a live document &mdash; after you make more
-        changes, share a fresh link.
+        Toàn bộ dữ liệu của bảng được nén vào đường link này, bất kỳ ai mở link cũng sẽ thấy chính xác những gì bạn đang thấy. 
+        Đây là một bản lưu tĩnh chứ không cập nhật tự động — vì vậy sau khi bạn thay đổi đội hình, hãy copy và chia sẻ một link mới.
       </p>
       <input
         ref={inputRef}
@@ -57,11 +56,11 @@ export function ShareDialog({ roster, onClose }: ShareDialogProps) {
         readOnly
         value={url}
         onFocus={(event) => event.currentTarget.select()}
-        aria-label="Share link"
+        aria-label="Link chia sẻ"
       />
       <p className="share-length">
-        {url.length} characters
-        {url.length > LONG_URL_THRESHOLD && ' — long enough that some chat apps may cut it off.'}
+        {url.length} ký tự
+        {url.length > LONG_URL_THRESHOLD && '- link khá dài nên một số ứng dụng nhắn tin có thể sẽ cắt bớt.'}
       </p>
     </Modal>
   );
