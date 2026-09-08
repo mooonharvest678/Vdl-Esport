@@ -14,18 +14,18 @@ interface SettingsDialogProps {
 const UNIQUE_MODE_OPTIONS: { mode: UniqueMode; title: string; desc: string }[] = [
   {
     mode: 'character',
-    title: 'One per character',
-    desc: 'Alternate outfits count as the same uma. This is the usual tournament rule.',
+    title: 'Một nhân vật duy nhất',
+    desc: 'Các trang phục khác nhau vẫn được tính là cùng một Uma. Đây là quy tắc thông thường của các giải đấu.',
   },
   {
     mode: 'outfit',
-    title: 'One per outfit',
-    desc: 'Two players may run the same uma as long as they use different versions.',
+    title: 'Mỗi phiên bản một nhân vật',
+    desc: 'Hai tuyển thủ có thể dùng chung một Uma miễn là họ sử dụng các phiên bản (trang phục) khác nhau.',
   },
   {
     mode: 'off',
-    title: 'No restriction',
-    desc: 'Anyone can run anything. Nothing is locked out and nothing is flagged.',
+    title: 'Không giới hạn',
+    desc: 'Ai cũng có thể chọn bất kỳ nhân vật nào. Không có lựa chọn nào bị khóa hay bị cảnh báo.',
   },
 ];
 
@@ -56,7 +56,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
 
   return (
     <Modal
-      title="Tournament settings"
+      title="Cài đặt giải đấu"
       onClose={onClose}
       footer={
         <>
@@ -173,7 +173,7 @@ export function SettingsDialog({ roster, dispatch, onClose }: SettingsDialogProp
           style={{ marginTop: 8 }}
           onClick={() => dispatch({ type: 'addLane' })}
         >
-          + Add group
+          + Thêm nhóm
         </button>
         <p className="field-help">
           A category makes each slot show that uma's aptitude grade for the distance. It's a hint
