@@ -48,7 +48,7 @@ function useBoot() {
           fromShareLink: shared != null,
         });
       } catch {
-        if (!cancelled) setError('Could not load the uma list. Check your connection and reload.');
+        if (!cancelled) setError('Không thể tải danh sách Uma. Vui lòng kiểm tra kết nối mạng và tải lại trang.');
       }
     })();
 
@@ -72,7 +72,7 @@ export function App() {
   }
 
   if (!boot || !catalog) {
-    return <div className="loading">Loading uma list...</div>;
+    return <div className="loading">Đang tải danh sách Uma...</div>;
   }
 
   return <Picker boot={boot} catalog={catalog} />;
@@ -128,7 +128,7 @@ function Picker({ boot, catalog }: { boot: Boot; catalog: Catalog }) {
   const dispatch = store.dispatch;
 
   const startFresh = useCallback(() => {
-    if (!window.confirm('Clear this board and start a new one?')) return;
+    if (!window.confirm('Bạn có chắc muốn xóa dữ liệu bảng hiện tại và tạo một bảng mới không?')) return;
     clearHash();
     setSharedBannerOpen(false);
     dispatch({ type: 'replace', roster: defaultRoster() });
@@ -155,24 +155,24 @@ function Picker({ boot, catalog }: { boot: Boot; catalog: Catalog }) {
     <div className="app">
       <header className="app-header">
         <div className="brand">
-          <span className="brand-name">Club Clash Picker</span>
+          <span className="brand-name">VDL Esport - Uma Picker</span>
           <input
             className="title-input"
             value={roster.title}
             onChange={(event) => dispatch({ type: 'setTitle', title: event.target.value })}
-            placeholder="Team name"
-            aria-label="Team name"
+            placeholder="Tên đội"
+            aria-label="Tên đội"
           />
         </div>
         <div className="header-actions">
           <button className="btn" onClick={() => setShowSettings(true)}>
-            Settings
+            Cài đặt
           </button>
           <button className="btn btn-ghost" onClick={startFresh}>
-            New board
+            Tạo mới
           </button>
           <button className="btn btn-primary" onClick={() => setShowShare(true)}>
-            Share link
+            Chia sẻ link
           </button>
         </div>
       </header>
@@ -180,10 +180,10 @@ function Picker({ boot, catalog }: { boot: Boot; catalog: Catalog }) {
       {sharedBannerOpen && (
         <div className="notice notice-info">
           <div className="notice-body">
-            You're viewing a shared board. Edits stay on this device until you share a link back.
+            Bạn đang xem bảng được chia sẻ. Các thay đổi chỉ lưu trên thiết bị này cho đến khi bạn tạo link chia sẻ mới.
           </div>
           <button className="btn btn-sm btn-ghost" onClick={() => setSharedBannerOpen(false)}>
-            Got it
+            Toi dong tinh
           </button>
         </div>
       )}
@@ -191,8 +191,7 @@ function Picker({ boot, catalog }: { boot: Boot; catalog: Catalog }) {
       {boot.catalogSource === 'bundled' && (
         <div className="notice notice-warn">
           <div className="notice-body">
-            Couldn't reach the live uma list, so this is the copy bundled with the site. Very
-            recent releases may be missing.
+            Không thể kết nối với máy chủ dữ liệu, đang sử dụng danh sách offline. Các Uma mới ra mắt gần đây có thể chưa được cập nhật.
           </div>
         </div>
       )}
@@ -201,7 +200,7 @@ function Picker({ boot, catalog }: { boot: Boot; catalog: Catalog }) {
         <div className="notice notice-error">
           <div className="notice-body">
             <strong>
-              {issues.length === 1 ? '1 clash to sort out' : `${issues.length} clashes to sort out`}
+              {issues.length === 1 ? 'Có 1 trường hợp trùng lặp cần xử lý' : `Có ${issues.length} trường hợp trùng lặp cần xử lý`}
             </strong>
             <ul>
               {issues.map((issue) => (
@@ -214,16 +213,16 @@ function Picker({ boot, catalog }: { boot: Boot; catalog: Catalog }) {
 
       <div className="meta-row">
         <span className="progress-pill">
-          {filled} / {total} slots picked
+          Đã chọn: ${filled} / ${total}
         </span>
         <span>
           {roster.settings.uniqueMode === 'character'
-            ? 'One uma per character, alts included'
+            ? 'Chỉ 1 Uma mỗi nhân vật (Bao gồm cả các dạng Alt/Trang phục khác)'
             : roster.settings.uniqueMode === 'outfit'
-              ? 'One uma per outfit, alts allowed'
-              : 'No unique-uma restriction'}
+              ? 'Chỉ 1 Uma mỗi trang phục (Được phép dùng dạng Alt)'
+              : 'Không giới hạn trùng lặp Uma'}
         </span>
-        <span>Add more than one uma to a slot to mark it as undecided.</span>
+        <span>Chọn nhiều hơn một Uma vào cùng một ô nếu bạn vẫn đang phân vân.</span>
       </div>
 
       <Board
